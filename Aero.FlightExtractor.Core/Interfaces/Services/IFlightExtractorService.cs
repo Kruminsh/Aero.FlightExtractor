@@ -1,4 +1,4 @@
-﻿using Aero.FlightExtractor.Core.Models;
+﻿using Aero.FlightExtractor.Core.Models.ExtractionResults;
 
 namespace Aero.FlightExtractor.Core.Interfaces.Services
 {

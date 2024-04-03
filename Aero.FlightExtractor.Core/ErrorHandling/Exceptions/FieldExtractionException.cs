@@ -3,7 +3,5 @@
     /// <summary>
     /// Exception type for throwing field extraction errors
     /// </summary>
-    public class FieldExtractionException : Exception
-    {
-    }
+    public class FieldExtractionException : Exception { }
 }

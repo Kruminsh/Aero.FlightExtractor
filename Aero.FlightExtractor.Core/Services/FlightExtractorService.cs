@@ -1,9 +1,7 @@
-﻿using Aero.FlightExtractor.Core.ErrorHandling;
-using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
+﻿using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
 using Aero.FlightExtractor.Core.Interfaces.Services;
 using Aero.FlightExtractor.Core.Interfaces.Specifications;
-using Aero.FlightExtractor.Core.Models;
-using Aero.FlightExtractor.Core.Models.Chapters;
+using Aero.FlightExtractor.Core.Models.ExtractionResults;
 
 namespace Aero.FlightExtractor.Core.Services
 {
@@ -23,7 +21,7 @@ namespace Aero.FlightExtractor.Core.Services
 
         public FlightExtractionResult ExtractFlightData(string documentPath)
         {
-            var extractedChapters = new List<ChapterBase>();
+            var extractedChapters = new List<ChapterExtractionResult>();
             IChapterProcessor? chapterProcessor = null;
 
             using var document = _documentAccessor.Open(documentPath);
@@ -31,7 +29,11 @@ namespace Aero.FlightExtractor.Core.Services
             {
                 if (_chapterSpecifications.SingleOrDefault(x => x.BeginsIn(page)) is IChapterSpecification newChapter)
                 {
-                    if (chapterProcessor != null) extractedChapters.Add(chapterProcessor.Finalize());
+                    if (chapterProcessor != null)
+                    {
+                        extractedChapters.Add(chapterProcessor.Finalize());
+                    }
+
                     chapterProcessor = newChapter.CreateProcessor();
                 };
 
@@ -46,23 +48,12 @@ namespace Aero.FlightExtractor.Core.Services
                 }
             }
 
-            if (chapterProcessor != null) extractedChapters.Add(chapterProcessor.Finalize());
-
-            return CreateExtractionResult(extractedChapters);
-        }
-
-        private FlightExtractionResult CreateExtractionResult(List<ChapterBase> extractedChapters)
-        {
-            var flightData = extractedChapters
-                .GroupBy(x => x.Flight)
-                .Select(x => new FlightData(x.Key, x.ToList()))
-                .ToList();
-
-            return new FlightExtractionResult
+            if (chapterProcessor != null)
             {
-                Flights = flightData.ToList(),
-                Errors = new List<ExtractionError>()
-            };
+                extractedChapters.Add(chapterProcessor.Finalize());
+            }
+
+            return FlightExtractionResult.Create(extractedChapters);
         }
     }
 }

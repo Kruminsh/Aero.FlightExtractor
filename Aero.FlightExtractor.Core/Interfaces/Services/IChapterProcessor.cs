@@ -1,6 +1,6 @@
 ﻿using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
 using Aero.FlightExtractor.Core.Interfaces.Specifications;
-using Aero.FlightExtractor.Core.Models.Chapters;
+using Aero.FlightExtractor.Core.Models.ExtractionResults;
 
 namespace Aero.FlightExtractor.Core.Interfaces.Services
 {
@@ -12,6 +12,6 @@ namespace Aero.FlightExtractor.Core.Interfaces.Services
         IChapterProcessor Initialize(IChapterSpecification chapterSpecification);
         IChapterProcessor ExtractFieldsIfAny(IPage page);
         public bool AllFieldsExtracted();
-        ChapterBase Finalize();
+        ChapterExtractionResult Finalize();
     }
 }
