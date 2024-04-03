@@ -1,9 +1,11 @@
 ﻿using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
 using Aero.FlightExtractor.Core.Interfaces.Specifications;
 
-
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFlightPlan
 {
+    /// <summary>
+    /// Aircraft Registration field resolver for Operational Flight Plan chapter
+    /// </summary>
     public class AirrcraftRegistrationResolver : FieldResolverBase<string?>
     {
         public override string? ResolveFrom(IPage page)

@@ -3,7 +3,7 @@
     /// <summary>
     /// Crew member model
     /// </summary>
-    public class CrewMember
+    public record class CrewMember
     {
         public string? FullName { get; set; }
         public string? Function { get; set; }

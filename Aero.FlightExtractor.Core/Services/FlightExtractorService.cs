@@ -21,39 +21,41 @@ namespace Aero.FlightExtractor.Core.Services
 
         public FlightExtractionResult ExtractFlightData(string documentPath)
         {
-            var extractedChapters = new List<ChapterExtractionResult>();
-            IChapterExtractor? chapterProcessor = null;
-
             using var document = _documentAccessor.Open(documentPath);
+            var extractedChapters = ExtractChaptersFromDocument(document);
+            return FlightExtractionResult.Create(extractedChapters);
+        }
+
+        private List<ChapterExtractionResult> ExtractChaptersFromDocument(IDocument document)
+        {
+            IChapterExtractor? activeExtractor = null;
+            var extractedChapters = new List<ChapterExtractionResult>();
             foreach (var page in document.GetPages())
             {
-                if (_chapterSpecifications.SingleOrDefault(x => x.BeginsIn(page)) is IChapterSpecification newChapter)
-                {
-                    if (chapterProcessor != null)
-                    {
-                        extractedChapters.Add(chapterProcessor.Finalize());
-                    }
-
-                    chapterProcessor = newChapter.CreateExtractor();
-                };
-
-                if (chapterProcessor != null)
-                {
-                    chapterProcessor.ExtractFieldDataFrom(page);
-                    if (chapterProcessor.AllFieldsExtracted())
-                    {
-                        extractedChapters.Add(chapterProcessor.Finalize());
-                        chapterProcessor = null;
-                    }
-                }
+                ProcessPage(page, ref activeExtractor, extractedChapters);
             }
+            FinalizeActiveExtractor(activeExtractor, extractedChapters);
+            return extractedChapters;
+        }
 
-            if (chapterProcessor != null)
+        private void ProcessPage(IPage page, ref IChapterExtractor? activeExtractor, ICollection<ChapterExtractionResult> results)
+        {
+            var newChapterSpecification = _chapterSpecifications.FirstOrDefault(spec => spec.BeginsIn(page));
+            if (newChapterSpecification != null)
             {
-                extractedChapters.Add(chapterProcessor.Finalize());
+                FinalizeActiveExtractor(activeExtractor, results);
+                activeExtractor = newChapterSpecification.CreateExtractor();
             }
 
-            return FlightExtractionResult.Create(extractedChapters);
+            activeExtractor?.ExtractFieldDataFrom(page);
+        }
+
+        private void FinalizeActiveExtractor(IChapterExtractor? extractor, ICollection<ChapterExtractionResult> results)
+        {
+            if (extractor != null) 
+            {
+                results.Add(extractor.Finalize());
+            }
         }
     }
 }

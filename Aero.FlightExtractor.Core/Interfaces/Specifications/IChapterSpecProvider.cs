@@ -1,7 +1,8 @@
-﻿using Aero.FlightExtractor.Core.Models.Chapters;
-
-namespace Aero.FlightExtractor.Core.Interfaces.Specifications
+﻿namespace Aero.FlightExtractor.Core.Interfaces.Specifications
 {
+    /// <summary>
+    /// Chapter specification provider interface
+    /// </summary>
     public interface IChapterSpecProvider
     {
         public IReadOnlyCollection<IChapterSpecification> GetChapterSpecifications();

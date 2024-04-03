@@ -11,7 +11,6 @@ namespace Aero.FlightExtractor.Core.Interfaces.Services
     {
         IChapterExtractor Initialize(IChapterSpecification chapterSpecification);
         IChapterExtractor ExtractFieldDataFrom(IPage page);
-        public bool AllFieldsExtracted();
         ChapterExtractionResult Finalize();
     }
 }

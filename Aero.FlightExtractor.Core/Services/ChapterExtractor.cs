@@ -31,6 +31,8 @@ namespace Aero.FlightExtractor.Core.Services
 
         public ChapterExtractor<T> ExtractFieldDataFrom(IPage page)
         {
+            if (_extractedData.Count == _fieldResolvers.Count) return this;
+
             foreach (var resolver in _fieldResolvers.Where(x => !_extractedData.ContainsKey(x.Key)))
             {
                 try
@@ -55,11 +57,6 @@ namespace Aero.FlightExtractor.Core.Services
             }
 
             return this;
-        }
-
-        public bool AllFieldsExtracted()
-        {
-            return _extractedData.Count == _fieldResolvers.Count;
         }
 
         public ChapterExtractionResult Finalize()
