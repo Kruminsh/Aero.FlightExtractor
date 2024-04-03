@@ -3,6 +3,9 @@ using Aero.FlightExtractor.Core.Interfaces.Specifications;
 
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFlightPlan
 {
+    /// <summary>
+    /// Route resolver for Operational Flight Plan chapter
+    /// </summary>
     public class RouteFieldResolver : FieldResolverBase<string?>
     {
         public override string? ResolveFrom(IPage page)
@@ -21,7 +24,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
                 }
             }
 
-            return null;
+            return default;
         }
     }
 }

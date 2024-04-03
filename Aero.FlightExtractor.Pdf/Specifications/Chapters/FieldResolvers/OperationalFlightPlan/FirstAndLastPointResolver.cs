@@ -20,9 +20,10 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
 
             if (words.Length > 1)
             {
-                return $"{words[0]}-{words[^1]}";
+                return $"{words[0]} - {words[^1]}";
             }
-            return null;
+
+            return default;
         }
     }
 }

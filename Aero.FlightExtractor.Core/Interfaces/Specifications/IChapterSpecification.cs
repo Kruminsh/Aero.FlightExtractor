@@ -10,7 +10,7 @@ namespace Aero.FlightExtractor.Core.Interfaces.Specifications
     /// </summary>
     public interface IChapterSpecification {
         public bool BeginsIn(IPage page);
-        public IChapterProcessor CreateProcessor();
+        public IChapterExtractor CreateExtractor();
     }
 
     /// <summary>
@@ -19,7 +19,7 @@ namespace Aero.FlightExtractor.Core.Interfaces.Specifications
     /// <typeparam name="T"></typeparam>
     public interface IChapterSpecification<T> : IChapterSpecification where T : ChapterBase, new()
     {
-        public new ChapterProcessor<T> CreateProcessor();
+        public new ChapterExtractor<T> CreateExtractor();
         public IReadOnlyDictionary<string, IFieldResolver> GetFieldResolvers(T chapter);
     }
 }

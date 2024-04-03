@@ -3,6 +3,9 @@ using Aero.FlightExtractor.Core.Interfaces.Specifications;
 
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFlightPlan
 {
+    /// <summary>
+    /// Fuel To Destination field resolver for Operational Flight Plan chapter
+    /// </summary>
     public class FuelToDestinationResolver : FieldResolverBase<float?>
     {
         public override float? ResolveFrom(IPage page)
@@ -19,7 +22,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
                 }
             }
 
-            return null;
+            return default;
         }
     }
 }

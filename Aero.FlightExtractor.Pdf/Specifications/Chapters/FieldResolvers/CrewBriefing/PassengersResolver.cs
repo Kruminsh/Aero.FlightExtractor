@@ -4,6 +4,9 @@ using Aero.FlightExtractor.Core.Models.Chapters.Fields;
 
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.CrewBriefing
 {
+    /// <summary>
+    /// Resolver for passengers (C/Y) field in Crew Briefing chapter
+    /// </summary>
     public class PassengersResolver : FieldResolverBase<Passengers>
     {
         public override Passengers? ResolveFrom(IPage page)
@@ -28,7 +31,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.CrewBr
                 }
             }
 
-            return null;
+            return default;
         }
     }
 }

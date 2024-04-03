@@ -35,8 +35,8 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
             };
         }
 
-        public ChapterProcessor<CrewBriefing> CreateProcessor() => ChapterProcessor<CrewBriefing>.Initialize(this);
+        public ChapterExtractor<CrewBriefing> CreateExtractor() => ChapterExtractor<CrewBriefing>.Initialize(this);
 
-        IChapterProcessor IChapterSpecification.CreateProcessor() => CreateProcessor();
+        IChapterExtractor IChapterSpecification.CreateExtractor() => CreateExtractor();
     }
 }

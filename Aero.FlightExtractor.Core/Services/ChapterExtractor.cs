@@ -1,5 +1,4 @@
 ﻿using Aero.FlightExtractor.Core.ErrorHandling;
-using Aero.FlightExtractor.Core.ErrorHandling.Exceptions;
 using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
 using Aero.FlightExtractor.Core.Interfaces.Services;
 using Aero.FlightExtractor.Core.Interfaces.Specifications;
@@ -8,25 +7,29 @@ using Aero.FlightExtractor.Core.Models.ExtractionResults;
 
 namespace Aero.FlightExtractor.Core.Services
 {
-    public sealed class ChapterProcessor<T> : IChapterProcessor where T : ChapterBase, new()
+    /// <summary>
+    /// Chapter data extractor
+    /// </summary>
+    /// <typeparam name="T">Chapter type</typeparam>
+    public sealed class ChapterExtractor<T> : IChapterExtractor where T : ChapterBase, new()
     {
         private readonly IReadOnlyDictionary<string, IFieldResolver> _fieldResolvers;
         private readonly Dictionary<string, object?> _extractedData = [];
         private readonly List<ExtractionError> _extractionErrors = [];
         private readonly T _chapter;
 
-        private ChapterProcessor(IChapterSpecification<T> specification)
+        private ChapterExtractor(IChapterSpecification<T> specification)
         {
             _chapter = new T();
             _fieldResolvers = specification.GetFieldResolvers(_chapter);
         }
 
-        public static ChapterProcessor<T> Initialize(IChapterSpecification<T> specification)
+        public static ChapterExtractor<T> Initialize(IChapterSpecification<T> specification)
         {
             return new(specification);
         }
 
-        public ChapterProcessor<T> ExtractFieldsIfAny(IPage page)
+        public ChapterExtractor<T> ExtractFieldDataFrom(IPage page)
         {
             foreach (var resolver in _fieldResolvers.Where(x => !_extractedData.ContainsKey(x.Key)))
             {
@@ -39,12 +42,12 @@ namespace Aero.FlightExtractor.Core.Services
                         _extractedData.Add(resolver.Key, value);
                     }
                 }
-                catch (FieldExtractionException ex)
+                catch (Exception ex)
                 {
                     _extractionErrors.Add(new ExtractionError
                     {
                         PageNumber = page.Number,
-                        ChapterObject = nameof(T),
+                        ChapterObject = typeof(T).Name,
                         Message = ex.Message,
                         FieldName = resolver.Key
                     });
@@ -62,8 +65,22 @@ namespace Aero.FlightExtractor.Core.Services
         public ChapterExtractionResult Finalize()
         {
             PopulateChapterProperties();
+            return ChapterExtractionResult.Create(IsChapterValid() ? _chapter : null, _extractionErrors);
+        }
 
-            return ChapterExtractionResult.Create(_chapter, _extractionErrors);
+        private bool IsChapterValid()
+        {
+            var isFlightIdentified = _chapter.Flight is not null && _chapter.Flight.IsValid();
+            if (!isFlightIdentified)
+            {
+                _extractionErrors.Add(new ExtractionError
+                {
+                    Message = "Unable to identify flight",
+                    ChapterObject = typeof(T).Name,
+                });
+            }
+
+            return isFlightIdentified;
         }
 
         private void PopulateChapterProperties()
@@ -82,14 +99,14 @@ namespace Aero.FlightExtractor.Core.Services
             {
                 _extractionErrors.Add(new ExtractionError
                 {
-                    ChapterObject = nameof(T),
+                    ChapterObject = typeof(T).Name,
                     Message = $"Unable to assign values to chapter object: {ex.Message}",
                 });
             }
         }
 
-        public IChapterProcessor Initialize(IChapterSpecification chapterSpecification) => Initialize(chapterSpecification);
+        public IChapterExtractor Initialize(IChapterSpecification chapterSpecification) => Initialize(chapterSpecification);
 
-        IChapterProcessor IChapterProcessor.ExtractFieldsIfAny(IPage page) => ExtractFieldsIfAny(page);
+        IChapterExtractor IChapterExtractor.ExtractFieldDataFrom(IPage page) => ExtractFieldDataFrom(page);
     }
 }

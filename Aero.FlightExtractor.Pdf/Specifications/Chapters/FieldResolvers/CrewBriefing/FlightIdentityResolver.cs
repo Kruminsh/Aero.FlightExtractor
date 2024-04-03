@@ -6,6 +6,9 @@ using System.Globalization;
 
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
 {
+    /// <summary>
+    /// Flight Identity resolver for Crew Briefing chapter
+    /// </summary>
     public class FlightIdentityResolver : FieldResolverBase<FlightIdentity>
     {
         public override FlightIdentity? ResolveFrom(IPage page)
@@ -26,7 +29,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
                 }
             }
 
-            return null;
+            return default;
         }
     }
 }

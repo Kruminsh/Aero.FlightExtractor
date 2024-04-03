@@ -7,10 +7,10 @@ namespace Aero.FlightExtractor.Core.Interfaces.Services
     /// <summary>
     /// Chapter processor interface
     /// </summary>
-    public interface IChapterProcessor
+    public interface IChapterExtractor
     {
-        IChapterProcessor Initialize(IChapterSpecification chapterSpecification);
-        IChapterProcessor ExtractFieldsIfAny(IPage page);
+        IChapterExtractor Initialize(IChapterSpecification chapterSpecification);
+        IChapterExtractor ExtractFieldDataFrom(IPage page);
         public bool AllFieldsExtracted();
         ChapterExtractionResult Finalize();
     }

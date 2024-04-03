@@ -38,8 +38,8 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
             };
         }
 
-        public ChapterProcessor<OperationalFlightPlan> CreateProcessor() => ChapterProcessor<OperationalFlightPlan>.Initialize(this);
+        public ChapterExtractor<OperationalFlightPlan> CreateExtractor() => ChapterExtractor<OperationalFlightPlan>.Initialize(this);
 
-        IChapterProcessor IChapterSpecification.CreateProcessor() => CreateProcessor();
+        IChapterExtractor IChapterSpecification.CreateExtractor() => CreateExtractor();
     }
 }

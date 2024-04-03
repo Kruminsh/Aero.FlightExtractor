@@ -22,7 +22,7 @@ namespace Aero.FlightExtractor.Core.Services
         public FlightExtractionResult ExtractFlightData(string documentPath)
         {
             var extractedChapters = new List<ChapterExtractionResult>();
-            IChapterProcessor? chapterProcessor = null;
+            IChapterExtractor? chapterProcessor = null;
 
             using var document = _documentAccessor.Open(documentPath);
             foreach (var page in document.GetPages())
@@ -34,12 +34,12 @@ namespace Aero.FlightExtractor.Core.Services
                         extractedChapters.Add(chapterProcessor.Finalize());
                     }
 
-                    chapterProcessor = newChapter.CreateProcessor();
+                    chapterProcessor = newChapter.CreateExtractor();
                 };
 
                 if (chapterProcessor != null)
                 {
-                    chapterProcessor.ExtractFieldsIfAny(page);
+                    chapterProcessor.ExtractFieldDataFrom(page);
                     if (chapterProcessor.AllFieldsExtracted())
                     {
                         extractedChapters.Add(chapterProcessor.Finalize());

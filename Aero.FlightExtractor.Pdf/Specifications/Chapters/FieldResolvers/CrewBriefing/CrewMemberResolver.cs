@@ -4,6 +4,9 @@ using Aero.FlightExtractor.Core.Models.Chapters.Fields;
 
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
 {
+    /// <summary>
+    /// Crew member field resolver for Crew Briefing chapter
+    /// </summary>
     public class CrewMemberResolver : FieldResolverBase<IReadOnlyCollection<CrewMember>>
     {
         public override IReadOnlyCollection<CrewMember>? ResolveFrom(IPage page)
@@ -22,7 +25,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
                 };
             }
 
-            return null;
+            return default;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
                 return words[idx + 1].Text;
             }
 
-            return null;
+            return default;
         }
     }
 }
