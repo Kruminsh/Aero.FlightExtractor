@@ -1,15 +1,12 @@
-﻿using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
-using Aero.FlightExtractor.Core.Interfaces.Services;
-using Aero.FlightExtractor.Core.Interfaces.Specifications;
-using Aero.FlightExtractor.Core.Services;
-using Aero.FlightExtractor.Pdf.DocumentNavigation;
-using Aero.FlightExtractor.Pdf.Specifications.Providers;
+﻿using Aero.FlightExtractor.Core.Interfaces.Services;
+using Aero.FlightExtractor.Core.Models.Chapters;
+using Aero.FlightExtractor.Pdf.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-const string filePath = "C:\\Users\\lvkru\\Desktop\\Personal\\capzlog\\sample-file.pdf";
+const string filePath = "C:\\Aero\\sample-file.pdf";
 
 var services = new ServiceCollection();
-ConfigureServices(services);
+services.ConfigurePdfFlightExtractor();
 
 using (var serviceProvider = services.BuildServiceProvider())
 using (var scope = serviceProvider.CreateScope())
@@ -17,20 +14,33 @@ using (var scope = serviceProvider.CreateScope())
     var flightExtractorService = scope.ServiceProvider.GetRequiredService<IFlightExtractorService>();
     var result = flightExtractorService.ExtractFlightData(filePath);
 
-    Console.WriteLine("Extracted Flights:");
     foreach (var item in result.Flights)
     {
-        Console.WriteLine($"{item.Flight.FlightNumber} - {item.Flight.Date}");
+        Console.WriteLine($"Flight Number: {item.Flight.FlightNumber}");
+        Console.WriteLine($"Flight Date: {item.Flight.Date}");
+
+        foreach (var chapter in item.Chapters)
+        {
+            if (chapter is OperationalFlightPlan operationalFlightPlan)
+            {
+                Console.WriteLine($"Aircraft registration: {operationalFlightPlan.AircraftRegistration}");
+                Console.WriteLine($"Route: {operationalFlightPlan.Route}");
+                Console.WriteLine($"Alternate Airdrome 1: {operationalFlightPlan.AlternateAirdrome1}");
+                Console.WriteLine($"Alternate Airdrome 2: {operationalFlightPlan.AlternateAirdrome2}");
+                Console.WriteLine($"Route first and last navigation point: {operationalFlightPlan.ATC}");
+                Console.WriteLine($"Fuel To Destination: {operationalFlightPlan.FuelToDestination}");
+                Console.WriteLine();
+            }
+            else if (chapter is CrewBriefing crewBriefing) 
+            {
+                Console.WriteLine($"DOW: {crewBriefing.DryOperatingWeight}");
+                Console.WriteLine($"DOI: {crewBriefing.DryOperatingIndex}");
+                Console.WriteLine($"Passengers in Economy: {crewBriefing.Passengers?.Economy}");
+                Console.WriteLine($"Passengers in Business: {crewBriefing.Passengers?.Business}");
+                Console.WriteLine();
+            }
+        }
     }
 
     Console.ReadLine();
-}
-
-
-
-static void ConfigureServices(IServiceCollection services)
-{
-    services.AddTransient<IDocumentAccessor, PdfDocumentAccessor>();
-    services.AddTransient<IChapterSpecProvider, PdfChapterSpecProvider>();
-    services.AddTransient<IFlightExtractorService, FlightExtractorService>();
 }

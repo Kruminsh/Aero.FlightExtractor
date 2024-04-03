@@ -29,7 +29,21 @@ namespace Aero.FlightExtractor.Core.Services
             using var document = _documentAccessor.Open(documentPath);
             foreach (var page in document.GetPages())
             {
-                ProcessPage(page, chapterProcessor, extractedChapters);
+                if (_chapterSpecifications.SingleOrDefault(x => x.BeginsIn(page)) is IChapterSpecification newChapter)
+                {
+                    if (chapterProcessor != null) extractedChapters.Add(chapterProcessor.Finalize());
+                    chapterProcessor = newChapter.CreateProcessor();
+                };
+
+                if (chapterProcessor != null)
+                {
+                    chapterProcessor.ExtractFieldsIfAny(page);
+                    if (chapterProcessor.AllFieldsExtracted())
+                    {
+                        extractedChapters.Add(chapterProcessor.Finalize());
+                        chapterProcessor = null;
+                    }
+                }
             }
 
             if (chapterProcessor != null) extractedChapters.Add(chapterProcessor.Finalize());
@@ -49,25 +63,6 @@ namespace Aero.FlightExtractor.Core.Services
                 Flights = flightData.ToList(),
                 Errors = new List<ExtractionError>()
             };
-        }
-
-        private void ProcessPage(IPage page, IChapterProcessor? chapterProcessor, List<ChapterBase> extractedChapters)
-        {
-            if (_chapterSpecifications.SingleOrDefault(x => x.BeginsIn(page)) is IChapterSpecification newChapter)
-            {
-                if (chapterProcessor != null) extractedChapters.Add(chapterProcessor.Finalize());
-                chapterProcessor = newChapter.CreateProcessor();
-            };
-
-            if (chapterProcessor != null)
-            {
-                chapterProcessor.ExtractFieldsIfAny(page);
-                if (chapterProcessor.AllFieldsExtracted())
-                {
-                    extractedChapters.Add(chapterProcessor.Finalize());
-                    chapterProcessor = null;
-                }
-            }
         }
     }
 }
