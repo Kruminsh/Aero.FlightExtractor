@@ -25,6 +25,8 @@ using (var scope = serviceProvider.CreateScope())
             {
                 Console.WriteLine($"Aircraft registration: {operationalFlightPlan.AircraftRegistration}");
                 Console.WriteLine($"Route: {operationalFlightPlan.Route}");
+                Console.WriteLine($"Departure Time: {operationalFlightPlan.DepartureTime}");
+                Console.WriteLine($"Arrival Time: {operationalFlightPlan.ArrivalTime}");
                 Console.WriteLine($"Alternate Airdrome 1: {operationalFlightPlan.AlternateAirdrome1}");
                 Console.WriteLine($"Alternate Airdrome 2: {operationalFlightPlan.AlternateAirdrome2}");
                 Console.WriteLine($"Route first and last navigation point: {operationalFlightPlan.ATC}");
@@ -33,6 +35,14 @@ using (var scope = serviceProvider.CreateScope())
             }
             else if (chapter is CrewBriefing crewBriefing)
             {
+                if (crewBriefing.Crew is not null && crewBriefing.Crew.Any())
+                {
+                    Console.WriteLine("Crew:");
+                    foreach(var member in crewBriefing.Crew)
+                    {
+                        Console.WriteLine($"{member.FullName}, {member.Function}");
+                    }
+                }
                 Console.WriteLine($"DOW: {crewBriefing.DryOperatingWeight}");
                 Console.WriteLine($"DOI: {crewBriefing.DryOperatingIndex}");
                 Console.WriteLine($"Passengers in Economy: {crewBriefing.Passengers?.Economy}");

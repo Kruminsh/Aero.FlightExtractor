@@ -3,6 +3,7 @@ using Aero.FlightExtractor.Core.Interfaces.Services;
 using Aero.FlightExtractor.Core.Interfaces.Specifications;
 using Aero.FlightExtractor.Core.Models.Chapters;
 using Aero.FlightExtractor.Core.Services;
+using Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.OperationalFlightPlan;
 using Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFlightPlan;
 
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
@@ -33,6 +34,8 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
                 { nameof(chapter.Flight), new FlightIdentityResolver() },
                 { nameof(chapter.AircraftRegistration), new AirrcraftRegistrationResolver() },
                 { nameof(chapter.Route), new RouteFieldResolver() },
+                { nameof(chapter.DepartureTime), new DepartureTimeResolver() },
+                { nameof(chapter.ArrivalTime), new ArrivalTimeResolver() },
                 { nameof(chapter.ATC), new FirstAndLastPointResolver() },
                 { nameof(chapter.FuelToDestination), new FuelToDestinationResolver() }
             };

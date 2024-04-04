@@ -3,9 +3,5 @@
     /// <summary>
     /// Crew member model
     /// </summary>
-    public record class CrewMember
-    {
-        public string? FullName { get; set; }
-        public string? Function { get; set; }
-    }
+    public record class CrewMember(string? FullName, string? Function) { }
 }

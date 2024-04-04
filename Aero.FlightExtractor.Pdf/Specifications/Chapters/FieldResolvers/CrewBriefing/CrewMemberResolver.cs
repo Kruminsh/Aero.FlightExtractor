@@ -1,4 +1,5 @@
-﻿using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
+﻿using Aero.FlightExtractor.Core.ErrorHandling.Exceptions;
+using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
 using Aero.FlightExtractor.Core.Interfaces.Specifications;
 using Aero.FlightExtractor.Core.Models.Chapters.Fields;
 
@@ -11,31 +12,50 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
     {
         public override IReadOnlyCollection<CrewMember>? ResolveFrom(IPage page)
         {
-            return default;
-
-            // TODO: Implemnt
-
-            if (page.Text.Contains("Flight Crew Briefing"))
+            try
             {
-                var words = page.GetPageElements().ToList();
-                if (words.FirstOrDefault(x => x.Text == "Crew" && words[words.IndexOf(x) + 1].Text == "Func") is IPageElement firstWord)
+                if (page.Text.Contains("Flight Crew Briefing"))
                 {
-                    var crewList = new List<CrewMember>();
-                    var startINdex = words.IndexOf(firstWord) + 6;
-                    while (true)
+                    var words = page.GetPageElements().ToList();
+                    if (words.FirstOrDefault(x => x.Text == "Func" && words[words.IndexOf(x) + 1].Text == "3LC") is IPageElement firstWord)
                     {
-                        var function = words[startINdex].Text;
-                        var name = words[startINdex + 2].Text;
-                        crewList.Add(new CrewMember { FullName = name, Function = function });
+                        var firstColLabel = words.FirstOrDefault(x => x.Text == "Func");
+                        var secondColLabel = words.FirstOrDefault(x => x.Text == "3LC");
+                        if (firstColLabel != null && secondColLabel != null &&
+                            words.IndexOf(secondColLabel) - words.IndexOf(firstColLabel) == 1)
+                        {
+                            var crewList = new List<CrewMember>();
+                            var functions = new List<IPageElement>();
+                            // Assumption: There is always at least 1 crew member
+                            var firstFunction = words.First(x => x.Location.Top < firstColLabel.Location.Bottom
+                                    && x.Location.Right < secondColLabel.Location.Left);
+                            functions.Add(firstFunction);
 
-                        startINdex += 4;
+                            var nextFunction = words.FirstOrDefault(x => x.Location.Top < firstFunction.Location.Bottom 
+                                    && x.Location.Right < secondColLabel.Location.Left);
+                            while (nextFunction?.Location.Left == firstFunction.Location.Left)
+                            {
+                                functions.Add(nextFunction);
+                                nextFunction = words.FirstOrDefault(x => x.Location.Top < nextFunction.Location.Bottom
+                                    && x.Location.Right < secondColLabel.Location.Left);
+                            }
 
-                        if (words[startINdex++].Text == "X:")
-                            break;
-                    }
-                };
+                            foreach(var functionEl in functions)
+                            {
+                                // TODO: Extract names
+                                crewList.Add(new CrewMember("N/A", functionEl.Text));
+                            }
+
+                            return crewList;
+                        }
+                    };
+                }
             }
-
+            catch (Exception ex)
+            {
+                throw new FieldExtractionException("Failed to resolve crew members", page.Number, "Crew", ex);
+            }
+                
             return default;
         }
     }

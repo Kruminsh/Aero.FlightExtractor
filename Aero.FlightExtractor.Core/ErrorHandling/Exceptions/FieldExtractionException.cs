@@ -11,6 +11,12 @@
 
         public FieldExtractionException(string message): base(message) { }
         public FieldExtractionException(string message, Exception innerException) : base(message, innerException) { }
+        public FieldExtractionException(string message, int pageNumber, string fieldName) : base(message)
+        {
+            PageNumber = pageNumber;
+            FieldName = fieldName;
+        }
+
         public FieldExtractionException(string message, int pageNumber, string fieldName, Exception innerException) : base(message, innerException) 
         { 
             PageNumber = pageNumber;

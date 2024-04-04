@@ -1,7 +1,6 @@
 ﻿using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
 using Aero.FlightExtractor.Core.Interfaces.Specifications;
 using Aero.FlightExtractor.Core.Models;
-using Aero.FlightExtractor.Pdf.DocumentNavigation;
 using System.Globalization;
 
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
@@ -20,7 +19,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
                 var idx = words.IndexOf(depLabel);
                 if (words[idx + 1].Text != "ARR") return null;
 
-                var dateWord = (PdfWord)words[idx - 1];
+                var dateWord = words[idx - 1];
                 if (words.FirstOrDefault(x => x.Location.Bottom < dateWord.Location.Bottom) is IPageElement flightNrWord)
                 {
                     var dateTime = DateTime.ParseExact(dateWord.Text, "dd.MMM.yyyy", CultureInfo.InvariantCulture);
