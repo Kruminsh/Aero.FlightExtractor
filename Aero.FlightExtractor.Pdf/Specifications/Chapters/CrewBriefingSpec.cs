@@ -11,7 +11,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
     /// <summary>
     /// Crew Briefing chapter specification
     /// </summary>
-    public class CrewBriefingSpec : IChapterSpecification<CrewBriefing>
+    internal sealed class CrewBriefingSpec : IChapterSpecification<CrewBriefing>
     {
         public bool BeginsIn(IPage page)
         {

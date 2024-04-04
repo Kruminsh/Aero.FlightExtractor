@@ -6,7 +6,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
     /// <summary>
     /// Resolver for ATC call sign field in Operational Flight Plan
     /// </summary>
-    public class AtcSignResolver : FieldResolverBase<string?>
+    internal sealed class AtcSignResolver : FieldResolverBase<string?>
     {
         public override string? ResolveFrom(IPage page)
         {

@@ -7,7 +7,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
     /// <summary>
     /// Resolver for ZFM field in Operational Flight Plan chapter
     /// </summary>
-    public class ZeroFuelMassResolver : FieldResolverBase<int?>
+    internal sealed class ZeroFuelMassResolver : FieldResolverBase<int?>
     {
         public override int? ResolveFrom(IPage page)
         {

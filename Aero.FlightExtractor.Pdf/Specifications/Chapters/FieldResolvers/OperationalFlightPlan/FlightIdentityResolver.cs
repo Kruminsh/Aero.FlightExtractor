@@ -9,7 +9,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
     /// <summary>
     /// Flight Identity Resolver for Operational Flight Plan
     /// </summary>
-    public class FlightIdentityResolver : FieldResolverBase<FlightIdentity>
+    internal sealed class FlightIdentityResolver : FieldResolverBase<FlightIdentity>
     {
         public override FlightIdentity? ResolveFrom(IPage page)
         {

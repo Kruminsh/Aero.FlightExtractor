@@ -6,7 +6,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.CrewBr
     /// <summary>
     /// Resolver for DOW Field in Crew Briefing Chapter
     /// </summary>
-    public class DryOperatingWeightResolver : FieldResolverBase<int?>
+    internal sealed class DryOperatingWeightResolver : FieldResolverBase<int?>
     {
         public override int? ResolveFrom(IPage page)
         {

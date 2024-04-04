@@ -9,11 +9,12 @@ namespace Aero.FlightExtractor.Core.Services
     /// <summary>
     /// Flight Extractor service
     /// </summary>
-    public class FlightExtractorService(IChapterSpecProvider chapterSpecProvider, IDocumentAccessor documentAccessor) : IFlightExtractorService
+    public sealed class FlightExtractorService(IChapterSpecProvider chapterSpecProvider, IDocumentAccessor documentAccessor) : IFlightExtractorService
     {
         private readonly IDocumentAccessor _documentAccessor = documentAccessor;
         private readonly IReadOnlyCollection<IChapterSpecification> _chapterSpecifications = chapterSpecProvider.GetChapterSpecifications();
 
+        /// <inheritdoc />
         public FlightExtractionResult ExtractFlightData(string documentPath)
         {
             try

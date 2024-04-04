@@ -2,7 +2,10 @@
 
 namespace Aero.FlightExtractor.Pdf.DocumentNavigation
 {
-    public class PdfDocumentAccessor : IDocumentAccessor
+    /// <summary>
+    /// PDF Document accessor
+    /// </summary>
+    public sealed class PdfDocumentAccessor : IDocumentAccessor
     {
         public IDocument Open(string accessPath)
         {

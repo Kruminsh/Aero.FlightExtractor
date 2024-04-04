@@ -7,7 +7,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
     /// <summary>
     /// Fuel To Destination field resolver for Operational Flight Plan chapter
     /// </summary>
-    public class FuelToDestinationResolver : FieldResolverBase<float?>
+    internal sealed class FuelToDestinationResolver : FieldResolverBase<float?>
     {
         public override float? ResolveFrom(IPage page)
         {

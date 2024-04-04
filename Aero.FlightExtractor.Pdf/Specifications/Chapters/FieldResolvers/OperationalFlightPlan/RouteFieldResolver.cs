@@ -6,7 +6,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
     /// <summary>
     /// Route resolver for Operational Flight Plan chapter
     /// </summary>
-    public class RouteFieldResolver : FieldResolverBase<string?>
+    internal sealed class RouteFieldResolver : FieldResolverBase<string?>
     {
         public override string? ResolveFrom(IPage page)
         {

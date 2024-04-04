@@ -6,7 +6,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
     /// <summary>
     /// Resolver for ALTN1 field in Operational Flight Plan chapter
     /// </summary>
-    public class FirstAlternateAirdromeResolver : FieldResolverBase<string?>
+    internal sealed class FirstAlternateAirdromeResolver : FieldResolverBase<string?>
     {
         public override string? ResolveFrom(IPage page)
         {

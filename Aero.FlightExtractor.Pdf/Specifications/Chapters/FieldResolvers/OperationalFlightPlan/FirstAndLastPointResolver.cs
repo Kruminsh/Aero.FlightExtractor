@@ -3,7 +3,10 @@ using Aero.FlightExtractor.Core.Interfaces.Specifications;
 
 namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFlightPlan
 {
-    public class FirstAndLastPointResolver : FieldResolverBase<string?>
+    /// <summary>
+    /// Resolver for First and Last Navigation point field in Operational Flight Plan chapter
+    /// </summary>
+    internal sealed class FirstAndLastPointResolver : FieldResolverBase<string?>
     {
         public override string? ResolveFrom(IPage page)
         {

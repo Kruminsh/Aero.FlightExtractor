@@ -6,7 +6,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.CrewBr
     /// <summary>
     /// Resolver for DOI Field in Crew Briefing Chapter
     /// </summary>
-    public class DryOperatingIndexResolver : FieldResolverBase<float?>
+    internal sealed class DryOperatingIndexResolver : FieldResolverBase<float?>
     {
         public override float? ResolveFrom(IPage page)
         {

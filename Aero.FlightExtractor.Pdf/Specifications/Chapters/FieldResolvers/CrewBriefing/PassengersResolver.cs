@@ -7,7 +7,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.CrewBr
     /// <summary>
     /// Resolver for passengers (C/Y) field in Crew Briefing chapter
     /// </summary>
-    public class PassengersResolver : FieldResolverBase<Passengers>
+    internal sealed class PassengersResolver : FieldResolverBase<Passengers>
     {
         public override Passengers? ResolveFrom(IPage page)
         {

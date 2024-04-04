@@ -8,7 +8,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
     /// <summary>
     /// Crew member field resolver for Crew Briefing chapter
     /// </summary>
-    public class CrewMemberResolver : FieldResolverBase<IReadOnlyCollection<CrewMember>>
+    internal sealed class CrewMemberResolver : FieldResolverBase<IReadOnlyCollection<CrewMember>>
     {
         public override IReadOnlyCollection<CrewMember>? ResolveFrom(IPage page)
         {
@@ -53,12 +53,12 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
 
                                 // TODO: Maybe make a common extension method for looking for Elements in specific geometrical window ?
                                 var nameElements = elements
-                                .Where(x => x.Location.Left > lcLabel.Location.Right &&
-                                                x.Location.Bottom <= functions[i].Location.Bottom &&
-                                                x.Location.Right < lastColumnLeftBorder &&
-                                                x.Location.Bottom > bottomBorder)
-                                .Select(x => x.Text)
-                                .ToList();
+                                    .Where(x => x.Location.Left > lcLabel.Location.Right &&
+                                                    x.Location.Bottom <= functions[i].Location.Bottom &&
+                                                    x.Location.Right < lastColumnLeftBorder &&
+                                                    x.Location.Bottom > bottomBorder)
+                                    .Select(x => x.Text)
+                                    .ToList();
 
                                 var fullName = string.Join(" ", nameElements);
                                 crewMembers.Add(new CrewMember(fullName, functions[i].Text));

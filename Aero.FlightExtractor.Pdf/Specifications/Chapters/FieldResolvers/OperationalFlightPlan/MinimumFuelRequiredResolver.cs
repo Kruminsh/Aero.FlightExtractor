@@ -7,7 +7,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
     /// <summary>
     /// Resolver for Minimum Fuel Required field in Operational Flight Plan chapter
     /// </summary>
-    public class MinimumFuelRequiredResolver : FieldResolverBase<float?>
+    internal sealed class MinimumFuelRequiredResolver : FieldResolverBase<float?>
     {
         public override float? ResolveFrom(IPage page)
         {

@@ -8,7 +8,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
     /// <summary>
     /// Flight Identity resolver for Crew Briefing chapter
     /// </summary>
-    public class FlightIdentityResolver : FieldResolverBase<FlightIdentity>
+    internal sealed class FlightIdentityResolver : FieldResolverBase<FlightIdentity>
     {
         public override FlightIdentity? ResolveFrom(IPage page)
         {

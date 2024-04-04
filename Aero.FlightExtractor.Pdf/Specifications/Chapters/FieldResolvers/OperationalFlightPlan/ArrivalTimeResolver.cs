@@ -8,7 +8,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
     /// <summary>
     /// Resolver for Arrival Time field in Operational Flight Plan chapter
     /// </summary>
-    public class ArrivalTimeResolver : FieldResolverBase<TimeSpan?>
+    internal sealed class ArrivalTimeResolver : FieldResolverBase<TimeSpan?>
     {
         public override TimeSpan? ResolveFrom(IPage page)
         {

@@ -11,7 +11,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
     /// <summary>
     /// Specification for Operational Flight Plan Chapter
     /// </summary>
-    public class OperationalFlightPlanSpec : IChapterSpecification<OperationalFlightPlan>
+    internal sealed class OperationalFlightPlanSpec : IChapterSpecification<OperationalFlightPlan>
     {
         public bool BeginsIn(IPage page)
         {

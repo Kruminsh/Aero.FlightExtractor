@@ -7,7 +7,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
     /// <summary>
     /// Resolver for GAIN/LOSS field in Operational Flight Plan
     /// </summary>
-    public class GainResolver : FieldResolverBase<int?>
+    internal sealed class GainResolver : FieldResolverBase<int?>
     {
         private readonly IReadOnlyCollection<string> _gainOrLoss = ["GAIN", "LOSS"];
 
@@ -24,13 +24,12 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
                     var extractedGain = value.Replace("$/TON", "").Trim();
                     if (int.TryParse(extractedGain, out var gainValue))
                     {
-                        switch(nextElement.Text)
+                        return nextElement.Text switch
                         {
-                            case "GAIN":
-                                return gainValue;
-                            case "LOSS":
-                                return gainValue * -1;
-                        }
+                            "GAIN" => gainValue,
+                            "LOSS" => -gainValue,
+                            _ => throw new FieldExtractionException("Failed to parse gain/loss", page.Number, "Gain")
+                        };
                     }
 
                     throw new FieldExtractionException("Failed to parse gain/loss", page.Number, "Gain");

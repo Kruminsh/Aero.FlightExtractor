@@ -7,7 +7,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
     /// <summary>
     /// Resolver for Time To Alternate field in Operational Flight Plan chapter
     /// </summary>
-    public class FuelToAlternateResolver : FieldResolverBase<float?>
+    internal sealed class FuelToAlternateResolver : FieldResolverBase<float?>
     {
         public override float? ResolveFrom(IPage page)
         {

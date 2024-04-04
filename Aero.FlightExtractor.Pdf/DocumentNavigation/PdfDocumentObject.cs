@@ -3,6 +3,10 @@ using UglyToad.PdfPig;
 
 namespace Aero.FlightExtractor.Pdf.DocumentNavigation
 {
+    /// <summary>
+    /// PdfPig PdfDocument wrapper
+    /// </summary>
+    /// <param name="filePath"></param>
     public sealed class PdfDocumentObject(string filePath) : IDocument
     {
         private readonly PdfDocument _pdfDocument = PdfDocument.Open(filePath);
