@@ -19,7 +19,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
                 if (words.FirstOrDefault(x => x.Text == $"{to.Text}:") is IPageElement toFuelLabel)
                 {
                     var idx2 = words.IndexOf(toFuelLabel);
-                    if (float.TryParse(toFuelLabel.Text, out var fuel))
+                    if (float.TryParse(words[idx2 + 2].Text, out var fuel))
                     {
                         return fuel;
                     }
