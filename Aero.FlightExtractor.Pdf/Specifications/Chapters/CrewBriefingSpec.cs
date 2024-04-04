@@ -30,6 +30,8 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
             return new Dictionary<string, IFieldResolver>()
             {
                 { nameof(chapter.Flight), new FlightIdentityResolver() },
+                { nameof(chapter.DryOperatingWeight), new DryOperatingWeightResolver() },
+                { nameof(chapter.DryOperatingIndex), new DryOperatingIndexResolver() },
                 { nameof(chapter.Passengers), new PassengersResolver() },
                 { nameof(chapter.Crew), new CrewMemberResolver() },
             };

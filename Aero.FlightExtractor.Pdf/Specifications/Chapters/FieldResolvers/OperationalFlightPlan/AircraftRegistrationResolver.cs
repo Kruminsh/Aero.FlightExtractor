@@ -6,7 +6,7 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
     /// <summary>
     /// Aircraft Registration field resolver for Operational Flight Plan chapter
     /// </summary>
-    public class AirrcraftRegistrationResolver : FieldResolverBase<string?>
+    public class AircraftRegistrationResolver : FieldResolverBase<string?>
     {
         public override string? ResolveFrom(IPage page)
         {

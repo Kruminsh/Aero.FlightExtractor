@@ -16,8 +16,10 @@ using (var scope = serviceProvider.CreateScope())
 
     foreach (var item in result.Flights)
     {
+        Console.WriteLine("<-------------------------- FLIGHT -------------------------->");
         Console.WriteLine($"Flight Number: {item.Flight.FlightNumber}");
         Console.WriteLine($"Flight Date: {item.Flight.Date}");
+        Console.WriteLine();
 
         foreach (var chapter in item.Chapters)
         {
@@ -29,8 +31,15 @@ using (var scope = serviceProvider.CreateScope())
                 Console.WriteLine($"Arrival Time: {operationalFlightPlan.ArrivalTime}");
                 Console.WriteLine($"Alternate Airdrome 1: {operationalFlightPlan.AlternateAirdrome1}");
                 Console.WriteLine($"Alternate Airdrome 2: {operationalFlightPlan.AlternateAirdrome2}");
-                Console.WriteLine($"Route first and last navigation point: {operationalFlightPlan.ATC}");
+                Console.WriteLine($"ATC Call Sign: {operationalFlightPlan.AtcSign}");
+                Console.WriteLine($"Route first and last navigation point: {operationalFlightPlan.FirstAndLastNavPoint}");
+                Console.WriteLine($"Zero Fuel Mass: {operationalFlightPlan.ZeroFuelMass}");
+                Console.WriteLine($"Time To Destination: {operationalFlightPlan.TimeToDestination}");
                 Console.WriteLine($"Fuel To Destination: {operationalFlightPlan.FuelToDestination}");
+                Console.WriteLine($"Time To Alternate: {operationalFlightPlan.TimeToAlternate}");
+                Console.WriteLine($"Fuel To Alternate: {operationalFlightPlan.FuelToAlternate}");
+                Console.WriteLine($"Minimum Fuel Required: {operationalFlightPlan.MinimumFuelRequired}");
+                Console.WriteLine($"GAIN/LOSS: {operationalFlightPlan.Gain}");
                 Console.WriteLine();
             }
             else if (chapter is CrewBriefing crewBriefing)
@@ -42,6 +51,7 @@ using (var scope = serviceProvider.CreateScope())
                     {
                         Console.WriteLine($"{member.FullName}, {member.Function}");
                     }
+                    Console.WriteLine();
                 }
                 Console.WriteLine($"DOW: {crewBriefing.DryOperatingWeight}");
                 Console.WriteLine($"DOI: {crewBriefing.DryOperatingIndex}");
@@ -50,6 +60,9 @@ using (var scope = serviceProvider.CreateScope())
                 Console.WriteLine();
             }
         }
+
+        Console.WriteLine("<------------------------------------------------------------>");
+        Console.WriteLine();
     }
 
     Console.WriteLine("Errors");

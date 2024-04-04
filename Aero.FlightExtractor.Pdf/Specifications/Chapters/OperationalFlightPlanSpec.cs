@@ -32,12 +32,20 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
             return new Dictionary<string, IFieldResolver>()
             {
                 { nameof(chapter.Flight), new FlightIdentityResolver() },
-                { nameof(chapter.AircraftRegistration), new AirrcraftRegistrationResolver() },
+                { nameof(chapter.AircraftRegistration), new AircraftRegistrationResolver() },
                 { nameof(chapter.Route), new RouteFieldResolver() },
                 { nameof(chapter.DepartureTime), new DepartureTimeResolver() },
                 { nameof(chapter.ArrivalTime), new ArrivalTimeResolver() },
-                { nameof(chapter.ATC), new FirstAndLastPointResolver() },
-                { nameof(chapter.FuelToDestination), new FuelToDestinationResolver() }
+                { nameof(chapter.AlternateAirdrome1), new FirstAlternateAirdromeResolver() },
+                { nameof(chapter.AtcSign), new AtcSignResolver() },
+                { nameof(chapter.FirstAndLastNavPoint), new FirstAndLastPointResolver() },
+                { nameof(chapter.ZeroFuelMass), new ZeroFuelMassResolver() },
+                { nameof(chapter.TimeToDestination), new TimeToDestination() },
+                { nameof(chapter.FuelToDestination), new FuelToDestinationResolver() },
+                { nameof(chapter.TimeToAlternate), new TimeToAlternateResolver() },
+                { nameof(chapter.FuelToAlternate), new FuelToAlternateResolver() },
+                { nameof(chapter.MinimumFuelRequired), new MinimumFuelRequiredResolver() },
+                { nameof(chapter.Gain), new GainResolver() },
             };
         }
 
