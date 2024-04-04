@@ -1,4 +1,5 @@
-﻿using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
+﻿using Aero.FlightExtractor.Core.ErrorHandling;
+using Aero.FlightExtractor.Core.Interfaces.DocumentNavigation;
 using Aero.FlightExtractor.Core.Interfaces.Services;
 using Aero.FlightExtractor.Core.Interfaces.Specifications;
 using Aero.FlightExtractor.Core.Models.ExtractionResults;
@@ -8,22 +9,29 @@ namespace Aero.FlightExtractor.Core.Services
     /// <summary>
     /// Flight Extractor service
     /// </summary>
-    public class FlightExtractorService : IFlightExtractorService
+    public class FlightExtractorService(IChapterSpecProvider chapterSpecProvider, IDocumentAccessor documentAccessor) : IFlightExtractorService
     {
-        private readonly IDocumentAccessor _documentAccessor;
-        private readonly IReadOnlyCollection<IChapterSpecification> _chapterSpecifications;
-
-        public FlightExtractorService(IChapterSpecProvider chapterSpecProvider, IDocumentAccessor documentAccessor)
-        {
-            _chapterSpecifications = chapterSpecProvider.GetChapterSpecifications();
-            _documentAccessor = documentAccessor;
-        }
+        private readonly IDocumentAccessor _documentAccessor = documentAccessor;
+        private readonly IReadOnlyCollection<IChapterSpecification> _chapterSpecifications = chapterSpecProvider.GetChapterSpecifications();
 
         public FlightExtractionResult ExtractFlightData(string documentPath)
         {
-            using var document = _documentAccessor.Open(documentPath);
-            var extractedChapters = ExtractChaptersFromDocument(document);
-            return FlightExtractionResult.Create(extractedChapters);
+            try
+            {
+                using var document = _documentAccessor.Open(documentPath);
+                var extractedChapters = ExtractChaptersFromDocument(document);
+                return FlightExtractionResult.CreateFromChapterExtractions(extractedChapters);
+            }
+            catch (Exception ex)
+            {
+                return FlightExtractionResult.CreateFromErrors(new[]
+                {
+                    new ExtractionError
+                    {
+                        Message = $"Unexpected error during flight extraction: {ex.Message}",
+                    }
+                });
+            }
         }
 
         private List<ChapterExtractionResult> ExtractChaptersFromDocument(IDocument document)

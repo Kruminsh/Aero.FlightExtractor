@@ -13,7 +13,7 @@ namespace Aero.FlightExtractor.Core.Models.ExtractionResults
 
         private FlightExtractionResult() { }
 
-        public static FlightExtractionResult Create(IReadOnlyCollection<ChapterExtractionResult> chapterExtractions)
+        public static FlightExtractionResult CreateFromChapterExtractions(IReadOnlyCollection<ChapterExtractionResult> chapterExtractions)
         {
             var flightDictionary = new Dictionary<FlightIdentity, List<ChapterBase>>();
             foreach (var extraction in chapterExtractions)
@@ -36,6 +36,14 @@ namespace Aero.FlightExtractor.Core.Models.ExtractionResults
             {
                 Flights = flightDictionary.Select(x => new FlightData(x.Key, x.Value)).ToList(),
                 Errors = chapterExtractions.SelectMany(x => x.Errors).ToList()
+            };
+        }
+
+        public static FlightExtractionResult CreateFromErrors(IReadOnlyCollection<ExtractionError> extractionErrors)
+        {
+            return new FlightExtractionResult
+            {
+                Errors = extractionErrors
             };
         }
     }
