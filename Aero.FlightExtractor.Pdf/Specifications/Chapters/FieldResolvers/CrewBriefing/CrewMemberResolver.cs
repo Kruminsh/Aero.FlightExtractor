@@ -16,39 +16,57 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.CrewBriefing
             {
                 if (page.Text.Contains("Flight Crew Briefing"))
                 {
-                    var words = page.GetPageElements().ToList();
-                    if (words.FirstOrDefault(x => x.Text == "Func" && words[words.IndexOf(x) + 1].Text == "3LC") is IPageElement firstWord)
+                    var elements = page.GetPageElements().ToList();
+
+                    var funcLabel = elements.FirstOrDefault(x => x.Text == "Func");
+                    var lcLabel = elements.FirstOrDefault(x => x.Text == "3LC");
+                    var nameLabel = elements.FirstOrDefault(x => x.Text == "Name");
+                    if (funcLabel != null && lcLabel != null && nameLabel != null)
                     {
-                        var firstColLabel = words.FirstOrDefault(x => x.Text == "Func");
-                        var secondColLabel = words.FirstOrDefault(x => x.Text == "3LC");
-                        if (firstColLabel != null && secondColLabel != null &&
-                            words.IndexOf(secondColLabel) - words.IndexOf(firstColLabel) == 1)
+                        var funcIndex = elements.IndexOf(funcLabel);
+                        var lcIndex = elements.IndexOf(lcLabel);
+                        var nameIndex = elements.IndexOf(nameLabel);
+
+                        // Columns should be in correct order
+                        if (lcIndex - funcIndex == 1 &&  nameIndex - lcIndex == 1) 
                         {
-                            var crewList = new List<CrewMember>();
+                            var lastColumnLabels = new[] { elements[nameIndex + 1], elements[nameIndex + 2] };
+                            var lastColumnLeftBorder = lastColumnLabels.Select(x => x.Location.Left).Min();
+
+                            // Extract all "functions" under Func column
                             var functions = new List<IPageElement>();
-                            // Assumption: There is always at least 1 crew member
-                            var firstFunction = words.First(x => x.Location.Top < firstColLabel.Location.Bottom
-                                    && x.Location.Right < secondColLabel.Location.Left);
+                            var firstFunction = elements.First(x => x.Location.Top < funcLabel.Location.Bottom && x.Location.Right < lcLabel.Location.Left);
                             functions.Add(firstFunction);
 
-                            var nextFunction = words.FirstOrDefault(x => x.Location.Top < firstFunction.Location.Bottom 
-                                    && x.Location.Right < secondColLabel.Location.Left);
+                            var nextFunction = elements.FirstOrDefault(x => x.Location.Top < firstFunction.Location.Bottom && x.Location.Right < lcLabel.Location.Left);
                             while (nextFunction?.Location.Left == firstFunction.Location.Left)
                             {
                                 functions.Add(nextFunction);
-                                nextFunction = words.FirstOrDefault(x => x.Location.Top < nextFunction.Location.Bottom
-                                    && x.Location.Right < secondColLabel.Location.Left);
+                                nextFunction = elements.FirstOrDefault(x => x.Location.Top < nextFunction.Location.Bottom && x.Location.Right < lcLabel.Location.Left);
                             }
+                            var bottomBorderElement = nextFunction;
 
-                            foreach(var functionEl in functions)
+                            var crewMembers = new List<CrewMember>();
+                            for (int i = 0; i < functions.Count; i++)
                             {
-                                // TODO: Extract names
-                                crewList.Add(new CrewMember("N/A", functionEl.Text));
+                                var bottomBorder = i < functions.Count - 1 ? functions[i + 1].Location.Top : bottomBorderElement!.Location.Top;
+
+                                // TODO: Maybe make a common extension method for looking for Elements in specific geometrical window ?
+                                var nameElements = elements
+                                .Where(x => x.Location.Left > lcLabel.Location.Right &&
+                                                x.Location.Bottom <= functions[i].Location.Bottom &&
+                                                x.Location.Right < lastColumnLeftBorder &&
+                                                x.Location.Bottom > bottomBorder)
+                                .Select(x => x.Text)
+                                .ToList();
+
+                                var fullName = string.Join(" ", nameElements);
+                                crewMembers.Add(new CrewMember(fullName, functions[i].Text));
                             }
 
-                            return crewList;
+                            return crewMembers;
                         }
-                    };
+                    }
                 }
             }
             catch (Exception ex)

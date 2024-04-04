@@ -8,15 +8,15 @@ namespace Aero.FlightExtractor.Pdf.DocumentNavigation
     /// </summary>
     public sealed class PdfPage(Page page) : IPage
     {
-        private bool _elemantsIteratedOnce = false;
-        private List<IPageElement> _pageElements;
+        private bool _allElementsIteratedOnce = false;
+        private ICollection<IPageElement> _pageElements = Array.Empty<IPageElement>();
 
         public int Number => page.Number;
         public string Text => page.Text;
 
         public IEnumerable<IPageElement> GetPageElements()
         {
-            return _elemantsIteratedOnce ? ReadElementsFromCache() : ReadElementsFromPDF();
+            return _allElementsIteratedOnce ? ReadElementsFromCache() : ReadElementsFromPDF();
         }
 
         private IEnumerable<IPageElement> ReadElementsFromPDF()
@@ -29,7 +29,7 @@ namespace Aero.FlightExtractor.Pdf.DocumentNavigation
                 _pageElements.Add(pdfWord);
             }
 
-            _elemantsIteratedOnce = true;
+            _allElementsIteratedOnce = true;
         }
 
         private IEnumerable<IPageElement> ReadElementsFromCache()
