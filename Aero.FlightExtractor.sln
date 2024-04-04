@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aero.FlightExtractor.Consol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aero.FlightExtractor.Pdf.DependencyInjection", "Aero.FlightExtractor.Pdf.DependencyInjection\Aero.FlightExtractor.Pdf.DependencyInjection.csproj", "{69FE23B4-05C4-4311-982C-1DF092A85CA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aero.FlightExtractor.Core.Tests", "Aero.FlightExtractor.Core.Tests\Aero.FlightExtractor.Core.Tests.csproj", "{5CE6DDE8-38C6-448E-9C91-A0CC97DF7C36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aero.FlightExtractor.Pdf.Tests", "Aero.FlightExtractor.Pdf.Tests\Aero.FlightExtractor.Pdf.Tests.csproj", "{EC731D28-75B4-408A-AEDE-6246358EE019}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{69FE23B4-05C4-4311-982C-1DF092A85CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69FE23B4-05C4-4311-982C-1DF092A85CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69FE23B4-05C4-4311-982C-1DF092A85CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CE6DDE8-38C6-448E-9C91-A0CC97DF7C36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE6DDE8-38C6-448E-9C91-A0CC97DF7C36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE6DDE8-38C6-448E-9C91-A0CC97DF7C36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE6DDE8-38C6-448E-9C91-A0CC97DF7C36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC731D28-75B4-408A-AEDE-6246358EE019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC731D28-75B4-408A-AEDE-6246358EE019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC731D28-75B4-408A-AEDE-6246358EE019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC731D28-75B4-408A-AEDE-6246358EE019}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
