@@ -13,10 +13,15 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
     /// </summary>
     internal sealed class CrewBriefingSpec : IChapterSpecification<CrewBriefing>
     {
+        private const string _pageTitle = "Flight Assignment / Flight Crew Briefing";
+
         public bool BeginsIn(IPage page)
         {
-            if (page.Text.Contains("Flight Crew Briefing"))
+            var firstTenWords = page.GetPageElements().Take(10);
+            var firstTenWordText = string.Join(" ", firstTenWords.Select(x => x.Text));
+            if (firstTenWordText.StartsWith(_pageTitle, StringComparison.CurrentCultureIgnoreCase))
             {
+                // Check, if It is Page 1 of "Flight Assignment / Flight Crew Briefing"
                 var elements = page.GetPageElements().ToList();
                 var pageOne = elements.FirstOrDefault(x => x.Text == "Page" && elements[elements.IndexOf(x) + 1].Text == "1");
                 return pageOne != null;

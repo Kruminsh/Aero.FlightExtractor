@@ -25,8 +25,8 @@ namespace Aero.FlightExtractor.Pdf.DocumentNavigation
             foreach (var word in page.GetWords())
             {
                 var pdfWord = new PdfWord(word);
-                yield return pdfWord;
                 _pageElements.Add(pdfWord);
+                yield return pdfWord;
             }
 
             _allElementsIteratedOnce = true;

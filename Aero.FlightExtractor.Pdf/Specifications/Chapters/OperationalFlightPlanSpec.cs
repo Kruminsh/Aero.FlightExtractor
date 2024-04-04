@@ -15,16 +15,9 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters
     {
         public bool BeginsIn(IPage page)
         {
-            if (page.Text.Contains("Operational Flight Plan") )
-            {
-                var elements = page.GetPageElements().ToList();
-                if (elements.FirstOrDefault(x => x.Text == "Page") is IPageElement pageName)
-                {
-                    return elements[elements.IndexOf(pageName) + 1].Text == "1";
-                }
-            }
-
-            return false;
+            var firstWords = page.GetPageElements().Take(30);
+            var firstWordsText = string.Join(" ", firstWords.Select(x => x.Text));
+            return firstWordsText.Contains("Operational Flight Plan", StringComparison.CurrentCultureIgnoreCase) && firstWordsText.Contains("Page 1", StringComparison.CurrentCultureIgnoreCase);
         }
 
         public IReadOnlyDictionary<string, IFieldResolver> GetFieldResolvers(OperationalFlightPlan chapter)
