@@ -20,10 +20,12 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
                 {
                     var labelIndex = words.IndexOf(flightNrLabel);
                     var flightNumber = words[labelIndex + 1].Text;
+
                     if (words.FirstOrDefault(x => x.Text == "Date:") is IPageElement dateLabel)
                     {
                         labelIndex = words.IndexOf(dateLabel);
                         var dateText = words[labelIndex + 1].Text;
+
                         var dateTime = DateTime.ParseExact(dateText, "ddMMMyy", CultureInfo.InvariantCulture);
                         var flightDate = DateOnly.FromDateTime(dateTime);
 

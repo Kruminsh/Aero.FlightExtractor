@@ -13,10 +13,10 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.FieldResolvers.Operat
         public override TimeSpan? ResolveFrom(IPage page)
         {
             var words = page.GetPageElements().ToList();
-            if (words.FirstOrDefault(x => x.Text == "STA:") is IPageElement stdLabel)
+            if (words.FirstOrDefault(x => x.Text == "STA:") is IPageElement staLabel)
             {
-                var idx = words.IndexOf(stdLabel);
-                var timeText = words[idx + 1];
+                var labelIndex = words.IndexOf(staLabel);
+                var timeText = words[labelIndex + 1];
                 if (TimeSpan.TryParse(timeText.Text, CultureInfo.InvariantCulture, out var result))
                 {
                     return result;

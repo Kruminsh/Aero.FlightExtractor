@@ -10,20 +10,27 @@ namespace Aero.FlightExtractor.Pdf.Specifications.Chapters.Fields.OperationalFli
     {
         public override string? ResolveFrom(IPage page)
         {
-            var pageText = page.Text;
-            int start = pageText.IndexOf("ATC Route");
-            if (start == -1) return null;
-
-            var fromATC = pageText.Substring(start);
-            int end = fromATC.IndexOf("To ALTN1:");
-            var atcSubstring = fromATC.Substring(0, end);
-
-            var toDestIdx = atcSubstring.IndexOf("To DEST:");
-            string[] words = atcSubstring.Substring(toDestIdx + "To DEST:".Length).Split(new[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (words.Length > 1)
+            var elements = page.GetPageElements().ToList();
+            if (elements.FirstOrDefault(x => x.Text == "ATC") is IPageElement atcWord) 
             {
-                return $"{words[0]} - {words[^1]}";
+                var atcIndex = elements.IndexOf(atcWord);
+                if (elements[atcIndex + 1].Text != "Route") return default;
+
+                var restOfElements = elements.Skip(atcIndex + 2).ToList();
+                var toDestLabel = restOfElements.FirstOrDefault(x => x.Text == "DEST:");
+                var toAltnLabel = restOfElements.FirstOrDefault(x => x.Text == "ALTN1:");
+                if (toDestLabel != null && toAltnLabel != null) 
+                {
+                    var startIndex = restOfElements.IndexOf(toDestLabel);
+                    var endIndex = restOfElements.IndexOf(toAltnLabel) - 1; // - 1 due to "To" before "ALTN1"
+
+                    var fullRoute = restOfElements.Skip(startIndex + 1).Take(endIndex - startIndex - 1).ToList();
+
+                    if (fullRoute.Count > 1)
+                    {
+                        return $"{fullRoute[0].Text} - {fullRoute[^1].Text}";
+                    }
+                }
             }
 
             return default;
