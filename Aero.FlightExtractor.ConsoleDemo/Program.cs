@@ -14,14 +14,14 @@ using (var scope = serviceProvider.CreateScope())
     var flightExtractorService = scope.ServiceProvider.GetRequiredService<IFlightExtractorService>();
     var result = flightExtractorService.ExtractFlightData(filePath);
 
-    foreach (var item in result.Flights)
+    foreach (var flightData in result.Flights)
     {
         Console.WriteLine("<-------------------------- FLIGHT -------------------------->");
-        Console.WriteLine($"Flight Number: {item.Flight.FlightNumber}");
-        Console.WriteLine($"Flight Date: {item.Flight.Date}");
+        Console.WriteLine($"Flight Number: {flightData.Flight.FlightNumber}");
+        Console.WriteLine($"Flight Date: {flightData.Flight.Date}");
         Console.WriteLine();
 
-        foreach (var chapter in item.Chapters)
+        foreach (var chapter in flightData.Chapters)
         {
             if (chapter is OperationalFlightPlan operationalFlightPlan)
             {
@@ -66,11 +66,7 @@ using (var scope = serviceProvider.CreateScope())
     }
 
     Console.WriteLine("Errors");
-    if (!result.Errors.Any())
-    {
-        Console.WriteLine("None");
-    }
-    else
+    if (result.Errors.Count > 0)
     {
         foreach (var error in result.Errors)
         {
@@ -80,6 +76,10 @@ using (var scope = serviceProvider.CreateScope())
             if (error.Message != null) Console.WriteLine($"Message: {error.Message}");
             Console.WriteLine();
         }
+    }
+    else
+    {
+        Console.WriteLine("None");
     }
 
     Console.ReadLine();
